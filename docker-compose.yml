@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  
   web-app:
     build: .
     container_name: flask_app
@@ -12,7 +11,6 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
 
-  
   db-server:
     image: mysql:8.0
     container_name: mysql_db
@@ -24,19 +22,20 @@ services:
       - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql
-      
-   jenkins-automation:
+
+  jenkins-automation:
     image: jenkins/jenkins:lts-jdk17
     container_name: jenkins_server
     restart: always
     privileged: true
     user: root
     ports:
-      - "8080:8080" 
+      - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins-data:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock 
+      - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   db-data:
   jenkins-data:
