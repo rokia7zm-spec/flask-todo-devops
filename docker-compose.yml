@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  
+  web-app:
+    build: .
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db-server
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  
+  db-server:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret_password
+      MYSQL_DATABASE: todo_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+   jenkins-automation:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins_server
+    restart: always
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080" 
+      - "50000:50000"
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock # عشان جينكنز يقدر يتحكم في الدوكر بتاع جهازك
+
+volumes:
+  db-data:
+  jenkins-data:
